@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -46,11 +47,11 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout homeRl;
     private ProgressBar loadingPB;
     private TextView cityNameTV, temperatureTV, conditionTV;
-    private RecyclerView weatherRV;
+    //private RecyclerView weatherRV;
     private TextInputEditText cityEdit;
     private ImageView backIV, iconIV, searchIV;
-    private ArrayList<WeatherModelRV> weatherModelRVArrayList;
-    private WeatherAdapterRV weatherAdapterRV;
+    //private ArrayList<WeatherModelRV> weatherModelRVArrayList;
+    //private WeatherAdapterRV weatherAdapterRV;
 
     private LocationManager locationManager;
     private int PERMISSION_CODE = 1;
@@ -69,14 +70,14 @@ public class MainActivity extends AppCompatActivity {
         cityNameTV = findViewById(R.id.idTVCityName);
         temperatureTV = findViewById(R.id.idTVTemperature);
         conditionTV = findViewById(R.id.idTVCondition);
-        weatherRV = findViewById(R.id.idRVWeather);
+        //weatherRV = findViewById(R.id.idRVWeather);
         cityEdit = findViewById(R.id.idEditCity);
         backIV = findViewById(R.id.idIVBlack);
         iconIV = findViewById(R.id.idIVIcon);
         searchIV = findViewById(R.id.idIVSearch);
-        weatherModelRVArrayList = new ArrayList<>();
+        /*weatherModelRVArrayList = new ArrayList<>();
         weatherAdapterRV = new WeatherAdapterRV(this, weatherModelRVArrayList);
-        weatherRV.setAdapter(weatherAdapterRV);
+        weatherRV.setAdapter(weatherAdapterRV);*/
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
@@ -109,11 +110,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private void init() {
-
-
     }
 
     @Override
@@ -160,11 +156,12 @@ public class MainActivity extends AppCompatActivity {
                 url,
                 null,
                 new Response.Listener<JSONObject>() {
+                    @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public void onResponse(JSONObject response) {
                         loadingPB.setVisibility(View.GONE);
                         homeRl.setVisibility(View.VISIBLE);
-                        weatherModelRVArrayList.clear();
+                        //weatherModelRVArrayList.clear();
 
                         try {
                             String temperature = response.getJSONObject("current").getString("temp_c");
@@ -180,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                                 Picasso.get().load("https://images.unsplash.com/photo-1507400492013-162706c8c05e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1559&q=80").into(backIV);
                             }
 
-                            JSONObject forecastObj = response.getJSONObject("forecast");
+                            /*JSONObject forecastObj = response.getJSONObject("forecast");
                             JSONObject forecastDayObj = forecastObj.getJSONArray("forecastday").getJSONObject(0);
                             JSONArray hourArray = forecastDayObj.getJSONArray("hour");
 
@@ -192,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                                 String humidity = hourObj.getString("humidity");
                                 weatherModelRVArrayList.add(new WeatherModelRV(time, temp, img, humidity));
                             }
-                            weatherAdapterRV.notifyDataSetChanged();
+                            weatherAdapterRV.notifyDataSetChanged();*/
 
                         } catch (JSONException e) {
                             e.printStackTrace();
