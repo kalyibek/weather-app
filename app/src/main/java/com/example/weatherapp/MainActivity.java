@@ -62,11 +62,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        init();
-    }
 
-    private void init() {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         homeRl = findViewById(R.id.idRLHome);
         loadingPB = findViewById(R.id.idPBLoading);
@@ -82,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         weatherAdapterRV = new WeatherAdapterRV(this, weatherModelRVArrayList);
         weatherRV.setAdapter(weatherAdapterRV);
 
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -91,8 +88,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        cityName = getCityName(location.getLongitude(), location.getLatitude());
-        getWeatherInfo(cityName);
+
+        if (location != null) {
+            cityName = getCityName(location.getLongitude(), location.getLatitude());
+            getWeatherInfo(cityName);
+        } else {
+            cityName = "London";
+            getWeatherInfo(cityName);
+        }
 
         searchIV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +109,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void init() {
+
+
     }
 
     @Override
